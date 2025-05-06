@@ -1,5 +1,5 @@
 node_modules
 /test
 *.backup
-*.env
+*.env*
 .env.*
