@@ -1,0 +1,11 @@
+[2025-05-08T00:14:13.314Z] [ERRORS] Error: Test error for logging
+    at file:///D:/Dropbox/DOCUMENTOS/git/Backend3/Projects/BE-AdoptMe/src/app.js:31:11
+    at Layer.handle [as handle_request] (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\layer.js:95:5)
+    at D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\index.js:280:10)
+    at cookieParser (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\cookie-parser\index.js:57:14)
+    at Layer.handle [as handle_request] (D:\Dropbox\DOCUMENTOS\git\Backend3\Projects\BE-AdoptMe\node_modules\express\lib\router\layer.js:95:5)
