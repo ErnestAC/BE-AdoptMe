@@ -2,4 +2,6 @@ node_modules
 *.backup
 *.env*
 .env.*
-/logs/*.*
+src/logs/*.log
+logs
+src/logs/errors.log

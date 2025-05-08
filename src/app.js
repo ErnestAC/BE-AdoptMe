@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser';
 // custom error handler
 import { errorHandler } from './middlewares/errorHandler.js';
 
+// custom console.log
+import { logger } from './utils/logger.js';
+
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
@@ -27,11 +30,12 @@ app.use('/api/pets',petsRouter);
 app.use('/api/adoptions',adoptionsRouter);
 app.use('/api/sessions',sessionsRouter);
 
+//testing for error handler
 app.get('/test-error', (req, res) => {
     throw new Error('Test error for logging');
 });
 
-app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
+app.listen(PORT,()=>logger.info(`Listening on ${PORT}`))
 
 //error logger
 app.use(errorHandler);
