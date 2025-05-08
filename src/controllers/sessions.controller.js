@@ -1,3 +1,5 @@
+// controllers/sessions.controllers.js
+
 import { usersService } from "../services/index.js";
 import { createHash, passwordValidation } from "../utils/index.js";
 import jwt from 'jsonwebtoken';
