@@ -4,7 +4,7 @@ import { usersService } from "../services/index.js";
 import { createHash, passwordValidation } from "../utils/index.js";
 import jwt from 'jsonwebtoken';
 import UserDTO from '../dto/User.dto.js';
-import { logger } from '../utils/logger.js';
+import logger from '../utils/logger.js';
 
 const register = async (req, res) => {
     try {
@@ -22,8 +22,9 @@ const register = async (req, res) => {
         let result = await usersService.create(user);
         logger.info(result);
         res.send({ status: "success", payload: result._id });
-    } catch (error) {
-
+    }  catch (error) {
+        logger.error(`Register error: ${error.message}`);
+        res.status(500).send({ status: "error", error: "Internal server error" });
     }
 }
 
@@ -66,7 +67,6 @@ export default {
     current,
     login,
     register,
-    current,
     unprotectedLogin,
     unprotectedCurrent
 }

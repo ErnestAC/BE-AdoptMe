@@ -1,45 +1,33 @@
-// src/utils/logger.js
+    // src/utils/logger.js
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+    import { createLogger, format, transports } from "winston";
+    import path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+    const { combine, timestamp, printf, colorize } = format;
 
-const logsDir = path.join(__dirname, '..', 'logs');
-
-// Ensure logs directory exists
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir);
-}
-
-const getLogFilePath = (level) => path.join(logsDir, `${level}.log`);
-
-const writeLog = (level, content) => {
-    const timestamp = new Date().toISOString();
-    const formatted = `[${timestamp}] [${level.toUpperCase()}] ${content}\n`;
-
-    fs.appendFile(getLogFilePath(level), formatted, (err) => {
-        if (err) {
-            console.error('Logging error:', err);
-        }
+    const logFormat = printf(({ level, message, timestamp }) => {
+    return `${timestamp} [${level}]: ${message}`;
     });
 
-    if (level === 'info') {
-        console.log(formatted.trim());
-    } else if (level === 'warn') {
-        console.warn(formatted.trim());
-    } else if (level === 'errors') {
-        console.error(formatted.trim());
-    }
-};
+    const logger = createLogger({
+    level: "info",
+    format: combine(timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), logFormat),
+    transports: [
+        new transports.Console({
+        format: combine(
+            colorize(),
+            timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+            logFormat
+        ),
+        }),
+        new transports.File({
+        filename: path.join("logs", "error.log"),
+        level: "error",
+        }),
+        new transports.File({ filename: path.join("logs", "combined.log") }),
+    ],
+    });
 
-export const logger = {
-    info: (msg) => writeLog('info', typeof msg === 'string' ? msg : JSON.stringify(msg)),
-    warn: (msg) => writeLog('warn', typeof msg === 'string' ? msg : JSON.stringify(msg)),
-    error: (err) => {
-        const message = err?.stack || err?.message || JSON.stringify(err);
-        writeLog('errors', message);
-    }
-};
+    export default logger;
+
+

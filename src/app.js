@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 // custom console.log
-import { logger } from './utils/logger.js';
+import logger from './utils/logger.js';
 
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
