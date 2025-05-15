@@ -5,20 +5,27 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { errorHandler } from './middlewares/errorHandler.js';
 import logger from './utils/logger.js';
-
+import path from 'path';
+import { fileURLToPath } from 'url';
+import compression from 'express-compression'
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
 import loggerTestRouter from './routes/loggerTest.router.js';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'dev'}` });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const appEnv = process.env.APP_ENV || 'dev';
+dotenv.config({ path: path.resolve(__dirname, `../.env.${appEnv}`) });
 
 mongoose.set('strictQuery', false);
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI).catch(err => logger.error("MongoDB connection error:", err));
 
 const app = express();
+
+app.use(compression());
 
 app.use(express.json());
 app.use(cookieParser());

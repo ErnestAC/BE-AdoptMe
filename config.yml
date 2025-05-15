@@ -1,0 +1,75 @@
+config:
+  plugins:
+    metrics-by-endpoint: {}
+  target: "http://localhost:9988"
+  phases:
+    - duration: 30
+      arrivalRate: 2
+  processor: "./artillery/load-test-processor.js"
+  defaults:
+    headers:
+      Content-Type: application/json
+
+scenarios:
+  - name: Full CRUD on /api/pets
+    flow:
+      - get:
+          url: "/api/sessions/unprotectedLogin"
+          capture:
+            - json: "$"
+              as: loginResponse
+      - function: "saveToken"
+      - post:
+          url: "/api/pets"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            name: "TestPet"
+            specie: "Dog"
+            image: ""
+            birthDate: "2020-01-01"
+          capture:
+            - json: "$"
+              as: petCreateResponse
+      - function: "savePetId"
+      - put:
+          url: "/api/pets/{{ petId }}"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            name: "UpdatedPet"
+            specie: "Dog"
+            image: ""
+            birthDate: "2021-01-01"
+      - delete:
+          url: "/api/pets/{{ petId }}"
+          headers:
+            Authorization: "Bearer {{ token }}"
+  - name: Full CRUD on /api/users
+    flow:
+      - post:
+          url: "/api/sessions/register"
+          json:
+            first_name: "John"
+            last_name: "Tester"
+            role: "user"
+            email: "user{{ $randomNumber(1000, 9999) }}@test.com"
+            password: "123453211ssssAAA"
+          capture:
+            - json: "$"
+              as: userCreateResponse
+      - function: "saveUserId"
+      - put:
+          url: "/api/users/{{ userId }}"
+          json:
+            first_name: "Johnny"
+            last_name: "Tested"
+            role: "admin"
+            email: "updateduser@test.com"
+      - delete:
+          url: "/api/users/{{ userId }}"
+
+      
+  
+
+  
