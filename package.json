@@ -25,6 +25,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "artillery-plugin-metrics-by-endpoint": "^1.17.0",
     "chai": "^4.3.7",
     "mocha": "^10.1.0",
     "nodemon": "^3.1.10"
