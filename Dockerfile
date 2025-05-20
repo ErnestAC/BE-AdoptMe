@@ -1,7 +1,7 @@
 FROM node:20.11.0
-WORKDIR /
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
-COPY ./src ./src
-EXPOSE 9989
-CMD ["npm","start"]
+COPY . .
+EXPOSE 9988
+CMD ["node","server.js"]

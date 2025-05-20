@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 9988;
 const numCPUs = os.cpus().length;
 
 if (cluster.isPrimary) {
-    logger.info(`Primary process ${process.pid} is running`);
+    logger.info(`Primary process ${process.pid} is running in port ${PORT}`);
 
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
