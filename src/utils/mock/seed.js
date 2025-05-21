@@ -11,7 +11,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../../../.env.dev') });
 
 import mongoose from 'mongoose';
-import { generateMockUser, generateMockPet } from './generateMocks.js';
+import { generateMockPet } from './mockPets.js';
+import { generateMockUser } from './mockUsers.js';
 import { logger } from '../logger.js';
 
 import Users from '../../dao/Users.dao.js';

@@ -1,4 +1,3 @@
-// utils/mock/generateMocks.js
 
 import { faker } from '@faker-js/faker';
 
@@ -12,19 +11,21 @@ export const generateMockUser = () => {
         last_name,
         username: faker.internet.username({ firstName: first_name, lastName: last_name }),
         email: `${first_name.toLowerCase()}_${last_name.toLowerCase()}@${domain}`,
-        password: faker.internet.password(),
+        password: 'coder123',
         age: faker.number.int({ min: 18, max: 70 }),
         city: faker.location.city(),
-        bio: faker.lorem.sentence()
+        bio: faker.lorem.sentence(),
+        role: 'user',
+        pets: []
     };
 };
 
+export const generateMockUsers = (amountOf) => {
 
-export const generateMockPet = () => ({
-    name: faker.animal.cat(), // or .dog(), etc.
-    specie: faker.helpers.arrayElement(['Dog', 'Cat', 'Rabbit', 'Bird']),
-    breed: faker.animal.type(),
-    age: faker.number.int({ min: 1, max: 15 }),
-    description: faker.lorem.sentence(),
-    adopted: faker.datatype.boolean()
-});
+    let users = []
+    for (let i=0; i<amountOf; i++){
+        users.push(generateMockUser())
+    }
+    return users
+
+};
