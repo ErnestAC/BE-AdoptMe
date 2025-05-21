@@ -10,3 +10,11 @@ export const generateMockPet = () => ({
     description: faker.lorem.sentence(),
     adopted: faker.datatype.boolean()
 });
+
+export const generateMockPets = (amountOf) => {
+    let pets = [];
+    for (let i = 0; i < amountOf; i++) {
+        pets.push(generateMockPet());
+    }
+    return pets;
+};

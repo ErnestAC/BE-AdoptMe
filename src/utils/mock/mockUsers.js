@@ -1,5 +1,9 @@
+// src/utils/mock/mockUsers.js
 
 import { faker } from '@faker-js/faker';
+import bcrypt from 'bcrypt';
+
+const hashPassword = (plainPassword) => bcrypt.hashSync(plainPassword, 10);
 
 export const generateMockUser = () => {
     const first_name = faker.person.firstName();
@@ -11,7 +15,7 @@ export const generateMockUser = () => {
         last_name,
         username: faker.internet.username({ firstName: first_name, lastName: last_name }),
         email: `${first_name.toLowerCase()}_${last_name.toLowerCase()}@${domain}`,
-        password: 'coder123',
+        password: hashPassword('coder123'),
         age: faker.number.int({ min: 18, max: 70 }),
         city: faker.location.city(),
         bio: faker.lorem.sentence(),
@@ -21,11 +25,9 @@ export const generateMockUser = () => {
 };
 
 export const generateMockUsers = (amountOf) => {
-
-    let users = []
-    for (let i=0; i<amountOf; i++){
-        users.push(generateMockUser())
+    let users = [];
+    for (let i = 0; i < amountOf; i++) {
+        users.push(generateMockUser());
     }
-    return users
-
+    return users;
 };
