@@ -1,57 +1,73 @@
-// controllers/users.controllers.js
+// controllers/users.controller.js
 
 import { usersService } from "../services/index.js";
 import logger from "../utils/logger.js";
+import { ERROR_DICTIONARY } from "../utils/errorDictionary.js";
+import { CustomError } from "../utils/errors/CustomError.js";
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
     try {
         const users = await usersService.getAll();
         res.send({ status: "success", payload: users });
     } catch (error) {
         logger.error("Error in getAllUsers:", error);
-        res.status(500).send({ status: "error", error: "Failed to fetch users" });
+        next(new CustomError({ ...ERROR_DICTIONARY.INTERNAL_SERVER_ERROR }));
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
     try {
         const userId = req.params.uid;
         const user = await usersService.getUserById(userId);
-        if (!user) return res.status(404).send({ status: "error", error: "User not found" });
+        if (!user) {
+            throw new CustomError({
+                ...ERROR_DICTIONARY.USER_NOT_FOUND,
+                status: 404
+            });
+        }
         res.send({ status: "success", payload: user });
     } catch (error) {
         logger.error("Error in getUser:", error);
-        res.status(500).send({ status: "error", error: "Failed to fetch user" });
+        next(error);
     }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     try {
         const updateBody = req.body;
         const userId = req.params.uid;
         const user = await usersService.getUserById(userId);
-        if (!user) return res.status(404).send({ status: "error", error: "User not found" });
+        if (!user) {
+            throw new CustomError({
+                ...ERROR_DICTIONARY.USER_NOT_FOUND,
+                status: 404
+            });
+        }
 
-        const result = await usersService.update(userId, updateBody);
+        await usersService.update(userId, updateBody);
         res.send({ status: "success", message: "User updated" });
-        return result
     } catch (error) {
         logger.error("Error in updateUser:", error);
-        res.status(500).send({ status: "error", error: "Failed to update user" });
+        next(error);
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         const userId = req.params.uid;
         const user = await usersService.getUserById(userId);
-        if (!user) return res.status(404).send({ status: "error", error: "User not found" });
+        if (!user) {
+            throw new CustomError({
+                ...ERROR_DICTIONARY.USER_NOT_FOUND,
+                status: 404
+            });
+        }
 
         await usersService.delete(userId);
         res.send({ status: "success", message: "User deleted" });
     } catch (error) {
         logger.error("Error in deleteUser:", error);
-        res.status(500).send({ status: "error", error: "Failed to delete user" });
+        next(error);
     }
 };
 

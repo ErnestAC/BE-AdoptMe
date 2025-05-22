@@ -9,15 +9,34 @@ import  petModel  from '../dao/models/Pet.js';
 
 const router = Router();
 
-router.get('/mockingusers',async(req, res)=>{
-    let users = generateMockUsers(50)   
-    res.send({status:"success",payload:users})
+router.get('/mockingusers', async (req, res) => {
+    try {
+        const users = generateMockUsers(50);
+        res.send({ status: "success", payload: users });
+    } catch (error) {
+        logger.error("Error generating mock users:", error);
+        res.status(500).send({
+            status: "error",
+            message: "Failed to generate mock users.",
+            error: error.message
+        });
+    }
 });
 
-router.get('/mockingpets',async(req, res)=>{
-    let pets = generateMockPets(50)   
-    res.send({status:"success",payload:pets})
+router.get('/mockingpets', async (req, res) => {
+    try {
+        const pets = generateMockPets(100);
+        res.send({ status: "success", payload: pets });
+    } catch (error) {
+        logger.error("Error generating mock pets:", error);
+        res.status(500).send({
+            status: "error",
+            message: "Failed to generate mock pets.",
+            error: error.message
+        });
+    }
 });
+
 
 router.post('/generatedata', async (req, res) => {
     const { users: usersParam, pets: petsParam } = req.query;
