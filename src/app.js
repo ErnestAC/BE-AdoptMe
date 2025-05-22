@@ -43,6 +43,6 @@ app.get('/test-error', (req, res) => {
     throw new Error('Test error for logging');
 });
 
-app.use(errorHandler);
+app.use(errorHandler); // must be the last to work properly.
 
 export default app;
