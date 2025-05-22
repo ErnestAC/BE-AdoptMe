@@ -8,7 +8,7 @@ import { ERROR_DICTIONARY } from '../utils/errorDictionary.js';
 const fallbackLogger = getLogger();
 const router = Router();
 
-router.get('/loggerTest', (req, res, next) => {
+router.get('/', (req, res, next) => {
     const logger = req.logger || fallbackLogger;
 
     try {
@@ -22,7 +22,7 @@ router.get('/loggerTest', (req, res, next) => {
 
         res.send({
             status: 'success',
-            message: 'Logger test completed. Check your console and log files.'
+            message: 'Logger test completed. Check console and log files.'
         });
     } catch {
         next(new CustomError({ ...ERROR_DICTIONARY.INTERNAL_SERVER_ERROR }));

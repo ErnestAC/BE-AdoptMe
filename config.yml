@@ -2,7 +2,7 @@ config:
   
   target: "http://localhost:9988"
   phases:
-    - duration: 30
+    - duration: 120
       arrivalRate: 2
   processor: "./artillery/load-test-processor.js"
   defaults:
