@@ -44,6 +44,18 @@ export const ERROR_DICTIONARY = {
     INVALID_PASSWORD: {
         code: 'INVALID_PASSWORD',
         message: 'Incorrect password.'
+    },
+        INVALID_QUERY_PARAMS: {
+        code: 'INVALID_QUERY_PARAMS',
+        message: "Both 'users' and 'pets' query parameters must be valid numbers."
+    },
+    MOCK_INSERT_FAILED: {
+        code: 'MOCK_INSERT_FAILED',
+        message: "Failed to insert mock data into the database."
+    },
+    MOCK_GENERATION_FAILED: {
+        code: 'MOCK_GENERATION_FAILED',
+        message: "Failed to generate mock data."
     }
 
 

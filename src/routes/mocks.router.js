@@ -1,44 +1,37 @@
-// users.router.js
+// routes/mocks.router.js
 
 import { Router } from 'express';
 import { generateMockUsers } from '../utils/mock/mockUsers.js';
 import { generateMockPets } from '../utils/mock/mockPets.js';
-import  logger  from '../utils/logger.js'
-import  userModel  from '../dao/models/User.js';
-import  petModel  from '../dao/models/Pet.js';
+import logger from '../utils/logger.js';
+import userModel from '../dao/models/User.js';
+import petModel from '../dao/models/Pet.js';
+import { CustomError } from '../utils/errors/CustomError.js';
+import { ERROR_DICTIONARY } from '../utils/errorDictionary.js';
 
 const router = Router();
 
-router.get('/mockingusers', async (req, res) => {
+router.get('/mockingusers', async (req, res, next) => {
     try {
         const users = generateMockUsers(50);
         res.send({ status: "success", payload: users });
     } catch (error) {
         logger.error("Error generating mock users:", error);
-        res.status(500).send({
-            status: "error",
-            message: "Failed to generate mock users.",
-            error: error.message
-        });
+        next(new CustomError({ ...ERROR_DICTIONARY.MOCK_GENERATION_FAILED }));
     }
 });
 
-router.get('/mockingpets', async (req, res) => {
+router.get('/mockingpets', async (req, res, next) => {
     try {
         const pets = generateMockPets(100);
         res.send({ status: "success", payload: pets });
     } catch (error) {
         logger.error("Error generating mock pets:", error);
-        res.status(500).send({
-            status: "error",
-            message: "Failed to generate mock pets.",
-            error: error.message
-        });
+        next(new CustomError({ ...ERROR_DICTIONARY.MOCK_GENERATION_FAILED }));
     }
 });
 
-
-router.post('/generatedata', async (req, res) => {
+router.post('/generatedata', async (req, res, next) => {
     const { users: usersParam, pets: petsParam } = req.query;
 
     const numUsers = parseInt(usersParam, 10);
@@ -46,10 +39,10 @@ router.post('/generatedata', async (req, res) => {
 
     if (isNaN(numUsers) || isNaN(numPets)) {
         logger.warn(`Invalid parameters: users='${usersParam}', pets='${petsParam}'`);
-        return res.status(400).send({
-            status: "error",
-            message: "Both 'users' and 'pets' query parameters must be valid numbers."
-        });
+        return next(new CustomError({
+            ...ERROR_DICTIONARY.INVALID_QUERY_PARAMS,
+            status: 400
+        }));
     }
 
     logger.info(`Generating ${numUsers} mock users and ${numPets} mock pets...`);
@@ -73,11 +66,7 @@ router.post('/generatedata', async (req, res) => {
         });
     } catch (error) {
         logger.error("Error inserting mock data into the database:", error);
-        res.status(500).send({
-            status: "error",
-            message: "Failed to insert mock data into the database.",
-            error: error.message
-        });
+        next(new CustomError({ ...ERROR_DICTIONARY.MOCK_INSERT_FAILED }));
     }
 });
 
