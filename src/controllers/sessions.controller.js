@@ -4,11 +4,14 @@ import { usersService } from "../services/index.js";
 import { createHash, passwordValidation } from "../utils/index.js";
 import jwt from 'jsonwebtoken';
 import UserDTO from '../dto/User.dto.js';
-import logger from '../utils/logger.js';
+import { getLogger } from '../utils/logger.js';
 import { CustomError } from '../utils/errors/CustomError.js';
 import { ERROR_DICTIONARY } from '../utils/errorDictionary.js';
 
+const fallbackLogger = getLogger();
+
 const register = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const { first_name, last_name, email, password } = req.body;
 
@@ -40,6 +43,7 @@ const register = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const { email, password } = req.body;
 
@@ -74,11 +78,13 @@ const login = async (req, res, next) => {
             message: "Logged in"
         });
     } catch (error) {
+        logger.error(`Login error: ${error.message}`);
         next(error);
     }
 };
 
 const current = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const cookie = req.cookies['coderCookie'];
         const user = jwt.verify(cookie, 'tokenSecretJWT');
@@ -92,11 +98,13 @@ const current = async (req, res, next) => {
             status: 401
         });
     } catch (error) {
+        logger.error(`Current session error: ${error.message}`);
         next(error);
     }
 };
 
 const unprotectedLogin = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const { email, password } = req.body;
 
@@ -135,6 +143,7 @@ const unprotectedLogin = async (req, res, next) => {
 };
 
 const unprotectedCurrent = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const cookie = req.cookies['unprotectedCookie'];
         const user = jwt.verify(cookie, 'tokenSecretJWT');

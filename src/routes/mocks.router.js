@@ -1,17 +1,19 @@
-// routes/mocks.router.js
+// src/routes/mocks.router.js
 
 import { Router } from 'express';
 import { generateMockUsers } from '../utils/mock/mockUsers.js';
 import { generateMockPets } from '../utils/mock/mockPets.js';
-import logger from '../utils/logger.js';
+import { getLogger } from '../utils/logger.js';
 import userModel from '../dao/models/User.js';
 import petModel from '../dao/models/Pet.js';
 import { CustomError } from '../utils/errors/CustomError.js';
 import { ERROR_DICTIONARY } from '../utils/errorDictionary.js';
 
+const fallbackLogger = getLogger();
 const router = Router();
 
 router.get('/mockingusers', async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const users = generateMockUsers(50);
         res.send({ status: "success", payload: users });
@@ -22,6 +24,7 @@ router.get('/mockingusers', async (req, res, next) => {
 });
 
 router.get('/mockingpets', async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const pets = generateMockPets(100);
         res.send({ status: "success", payload: pets });
@@ -32,6 +35,7 @@ router.get('/mockingpets', async (req, res, next) => {
 });
 
 router.post('/generatedata', async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     const { users: usersParam, pets: petsParam } = req.query;
 
     const numUsers = parseInt(usersParam, 10);

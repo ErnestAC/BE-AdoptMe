@@ -1,13 +1,16 @@
 // src/routes/loggerTest.router.js
 
 import { Router } from 'express';
-import logger from '../utils/logger.js';
+import { getLogger } from '../utils/logger.js';
 import { CustomError } from '../utils/errors/CustomError.js';
 import { ERROR_DICTIONARY } from '../utils/errorDictionary.js';
 
+const fallbackLogger = getLogger();
 const router = Router();
 
 router.get('/loggerTest', (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
+
     try {
         logger.error('This is an error log');
         logger.warn('This is a warning log');
@@ -17,10 +20,12 @@ router.get('/loggerTest', (req, res, next) => {
         logger.debug?.('This is a debug log');
         logger.silly?.('This is a silly log');
 
-        res.send({ status: 'success', message: 'Logger test completed. Check your console and log files.' });
+        res.send({
+            status: 'success',
+            message: 'Logger test completed. Check your console and log files.'
+        });
     } catch {
         next(new CustomError({ ...ERROR_DICTIONARY.INTERNAL_SERVER_ERROR }));
-        
     }
 });
 

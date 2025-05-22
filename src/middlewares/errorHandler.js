@@ -1,13 +1,16 @@
 // src/middlewares/errorHandler.js
 
-import logger from "../utils/logger.js";
+import { getLogger } from "../utils/logger.js";
+
+const fallbackLogger = getLogger();
 
 export const errorHandler = (err, req, res, next) => {
     const status = err.status || 500;
     const code = err.code || 'UNKNOWN_ERROR';
     const message = err.message || 'Internal Server Error';
 
-    logger.error(`[${code}] ${message}`);
+    const activeLogger = req.logger || fallbackLogger;
+    activeLogger.error(`[${code}] ${message}`);
 
     res.status(status).json({
         status: "error",

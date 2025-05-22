@@ -11,25 +11,43 @@ const logFormat = printf(({ level, message, timestamp }) => {
     return `${time} [${level}]: ${msg}`;
 });
 
-const logger = createLogger({
-level: "info",
-format: combine(timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), logFormat),
-transports: [
-    new transports.Console({
+const devLogger = createLogger({
+    level: "verbose",
     format: combine(
         colorize(),
         timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
         logFormat
     ),
-    }),
-    new transports.File({
-    filename: path.join("logs", "error.log"),
-    level: "error",
-    }),
-    new transports.File({ filename: path.join("logs", "combined.log") }),
-],
+    transports: [
+        new transports.Console()
+    ]
 });
 
-export default logger;
+const prodLogger = createLogger({
+    level: "warn",
+    format: combine(
+        timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+        logFormat
+    ),
+    transports: [
+        new transports.File({
+            filename: path.join("logs", "warnings.log"),
+            level: "warn"
+        }),
+        new transports.File({
+            filename: path.join("logs", "errors.log"),
+            level: "error"
+        }),
+        new transports.File({
+            filename: path.join("logs", "combined.log")
+        })
+    ]
+});
 
+// Chooses the logger based on NODE_ENV
+export const getLogger = () => {
+    return process.env.NODE_ENV === 'prod' ? prodLogger : devLogger;
+};
 
+// Optional: also export explicitly
+export { devLogger, prodLogger };

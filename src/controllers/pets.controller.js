@@ -3,11 +3,14 @@
 import PetDTO from "../dto/Pet.dto.js";
 import { petsService } from "../services/index.js";
 import __dirname from "../utils/index.js";
-import logger from "../utils/logger.js";
+import { getLogger } from "../utils/logger.js";
 import { ERROR_DICTIONARY } from "../utils/errorDictionary.js";
 import { CustomError } from "../utils/errors/CustomError.js";
 
+const fallbackLogger = getLogger();
+
 const getAllPets = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const pets = await petsService.getAll();
         res.send({ status: "success", payload: pets });
@@ -18,6 +21,7 @@ const getAllPets = async (req, res, next) => {
 };
 
 const createPet = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const { name, specie, birthDate } = req.body;
         if (!name || !specie || !birthDate) {
@@ -37,6 +41,7 @@ const createPet = async (req, res, next) => {
 };
 
 const updatePet = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const petUpdateBody = req.body;
         const petId = req.params.pid;
@@ -50,6 +55,7 @@ const updatePet = async (req, res, next) => {
 };
 
 const deletePet = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const petId = req.params.pid;
 
@@ -62,6 +68,7 @@ const deletePet = async (req, res, next) => {
 };
 
 const createPetWithImage = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const file = req.file;
         const { name, specie, birthDate } = req.body;

@@ -1,11 +1,14 @@
 // controllers/users.controller.js
 
 import { usersService } from "../services/index.js";
-import logger from "../utils/logger.js";
+import { getLogger } from "../utils/logger.js";
 import { ERROR_DICTIONARY } from "../utils/errorDictionary.js";
 import { CustomError } from "../utils/errors/CustomError.js";
 
+const fallbackLogger = getLogger();
+
 const getAllUsers = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const users = await usersService.getAll();
         res.send({ status: "success", payload: users });
@@ -16,6 +19,7 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getUser = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const userId = req.params.uid;
         const user = await usersService.getUserById(userId);
@@ -33,6 +37,7 @@ const getUser = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const updateBody = req.body;
         const userId = req.params.uid;
@@ -53,6 +58,7 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
+    const logger = req.logger || fallbackLogger;
     try {
         const userId = req.params.uid;
         const user = await usersService.getUserById(userId);
