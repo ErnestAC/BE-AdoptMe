@@ -42,7 +42,7 @@ const updatePet = async (req, res, next) => {
         const petId = req.params.pid;
 
         const updated = await petsService.update(petId, petUpdateBody);
-        res.send({ status: "success", message: "Pet updated" });
+        res.send({ status: "success", message: "Pet updated", payload: updated });
     } catch (error) {
         logger.error("Error in updatePet:", error);
         next(error);
