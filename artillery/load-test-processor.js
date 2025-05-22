@@ -62,3 +62,21 @@ export function saveUserId(context, events, done) {
 
     return done();
 }
+
+// Stub functions to silence warnings
+export function metricsByEndpoint_beforeRequest(requestParams, context, ee, next) {
+    return next();
+}
+
+export function metricsByEndpoint_afterResponse(requestParams, response, context, ee, next) {
+    return next();
+}
+
+// Export all as a default object for Artillery compatibility
+export default {
+    saveToken,
+    savePetId,
+    saveUserId,
+    metricsByEndpoint_beforeRequest,
+    metricsByEndpoint_afterResponse
+};
