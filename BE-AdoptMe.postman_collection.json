@@ -778,14 +778,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9988/loggerTest",
+					"raw": "http://localhost:9988/api/errortest/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "9988",
 					"path": [
-						"loggerTest"
+						"api",
+						"errortest",
+						""
 					],
 					"query": [
 						{

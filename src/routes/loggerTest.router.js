@@ -12,13 +12,13 @@ router.get('/', (req, res, next) => {
     const logger = req.logger || fallbackLogger;
 
     try {
-        logger.error('This is an error log');
-        logger.warn('This is a warning log');
-        logger.info('This is an info log');
-        logger.http?.('This is an http log');
-        logger.verbose?.('This is a verbose log');
-        logger.debug?.('This is a debug log');
-        logger.silly?.('This is a silly log');
+        
+        logger.fatal("Fatal level log");
+        logger.error("Error level log");
+        logger.warning("Warning level log");
+        logger.info("Info level log");
+        logger.debug("Debug level log");
+
 
         res.send({
             status: 'success',

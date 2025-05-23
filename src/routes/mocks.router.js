@@ -42,7 +42,7 @@ router.post('/generatedata', async (req, res, next) => {
     const numPets = parseInt(petsParam, 10);
 
     if (isNaN(numUsers) || isNaN(numPets)) {
-        logger.warn(`Invalid parameters: users='${usersParam}', pets='${petsParam}'`);
+        logger.debug(`Invalid parameters: users='${usersParam}', pets='${petsParam}'`);
         return next(new CustomError({
             ...ERROR_DICTIONARY.INVALID_QUERY_PARAMS,
             status: 400

@@ -17,7 +17,7 @@ if (cluster.isPrimary) {
     }
 
     cluster.on('exit', (worker, code, signal) => {
-        logger.warn(`Worker ${worker.process.pid} died. Starting a new one...`);
+        logger.debug(`Worker ${worker.process.pid} died. Starting a new one...`);
         cluster.fork();
     });
 } else {
