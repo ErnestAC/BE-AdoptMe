@@ -15,11 +15,3 @@ This is the backend server for the **AdoptMe** pet adoption application. Built w
     ├── package.json
     └── README.md
 ```
-
-### Notes
-
-* Use `.env.dev`, `.env.qa`, etc. for environment-specific configs.
-* Make sure to exclude actual `.env.*` files from version control.
-
----
-For future improvements: user authentication, admin panel, email notifications, and deployment configurations.
